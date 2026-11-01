@@ -118,5 +118,5 @@ function aula(){const t=D.topicos.find(x=>x.id===cur);curM=t.materia;theme(t);co
  $('#bt').onclick=()=>{st();view='mat';render()};
  if(window.MediaSession||navigator.mediaSession){try{navigator.mediaSession.metadata=new MediaMetadata({title:t.nome,artist:'Esponja em Áudio'})}catch(e){}}}
 document.querySelectorAll('nav button').forEach(b=>b.onclick=()=>{view='home';render()});
-fetch('aulas.json?v='+Date.now()).then(r=>r.json()).then(d=>{D=d;render()}).catch(()=>app.innerHTML='<div class="card">Não foi possível carregar as aulas.</div>');
+fetch('aulas.json?v='+Date.now()).then(r=>r.json()).then(d=>{D=d;D.topicos.sort((a,b)=>a.pdf-b.pdf||a.ordem-b.ordem);render()}).catch(()=>app.innerHTML='<div class="card">Não foi possível carregar as aulas.</div>');
 </script></body></html>
