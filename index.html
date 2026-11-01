@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="pt-BR"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Esponja em Áudio</title><meta name="theme-color" content="#2f2119">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Lora:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--cream:#f4ecdc;--cream-2:#fff8f0;--sand:#eadcc3;--salmon:#d88f79;--salmon-2:#efb6a3;--brown:#8a5a2b;--brown-2:#5b3a22;--brown-3:#2f2119;--gold:#c28b2f;--ink:#352d24;--muted:#766b5d;--white:#fffdf9;--green:#3fa36b;--red:#b5482f;
+--tema:#F9A825;--tema-t:#FFF8E1;--tema-t2:#FFECB3;--tema-d:#8A5200}
+*{box-sizing:border-box;margin:0}
+body{background:var(--cream);color:var(--ink);font:17px/1.55 Inter,system-ui,sans-serif;min-height:100vh}
+body:before{content:"";display:block;height:10px;background:linear-gradient(90deg,var(--salmon) 0 25%,var(--gold) 0 50%,var(--brown) 0 75%,var(--brown-3) 0)}
+h1,h2,h3{font-family:Lora,Georgia,serif;color:var(--brown-3);line-height:1.2}
+header{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:14px 16px;max-width:820px;margin:0 auto}
+header h1{font-size:24px}header small{color:var(--muted);display:block;font-family:Inter;font-size:13px}
+nav{display:flex;gap:8px;max-width:820px;margin:0 auto;padding:0 16px 12px}
+nav button{flex:1;font:600 15px Inter;padding:10px 6px;background:var(--white);border:3px solid var(--brown-3);border-radius:12px;color:var(--brown-3);cursor:pointer;box-shadow:3px 3px 0 var(--brown-3)}
+nav button.on{background:var(--brown-3);color:var(--cream)}
+main{max-width:820px;margin:0 auto;padding:6px 16px 60px}
+.card{background:var(--white);border:3px solid var(--brown-3);border-radius:16px;box-shadow:5px 5px 0 var(--brown-3);padding:18px;margin-bottom:18px}
+.topic{display:block;width:100%;text-align:left;cursor:pointer;font:inherit;background:var(--tema-t);border-left-width:12px;border-left-color:var(--tema)}
+.topic h3{font-size:20px}.topic p{color:var(--muted);font-size:14px;margin-top:4px}
+.chip{display:inline-block;font:700 12px Inter;letter-spacing:.04em;text-transform:uppercase;padding:3px 10px;border:2px solid var(--brown-3);border-radius:99px;background:var(--tema);color:var(--brown-3);margin-bottom:8px}
+.bar{height:10px;border:2px solid var(--brown-3);border-radius:9px;background:var(--white);margin-top:10px;overflow:hidden}.bar i{display:block;height:100%;background:var(--tema)}
+.q{border-top:12px solid var(--tema)}
+.src{font-size:13px;color:var(--muted);margin-bottom:8px}
+.en{font-family:Lora,serif;font-size:19px;color:var(--brown-3);margin-bottom:10px}
+.itens{background:var(--tema-t);border:2px dashed var(--tema-d);border-radius:10px;padding:10px 14px;margin:8px 0 12px;font-size:16px}.itens p+p{margin-top:6px}
+.alt{display:flex;gap:12px;width:100%;text-align:left;font:inherit;background:var(--white);border:2.5px solid var(--brown-3);border-radius:12px;padding:11px 12px;margin:9px 0;cursor:pointer;box-shadow:3px 3px 0 var(--brown-3)}
+.alt:active{transform:translate(2px,2px);box-shadow:1px 1px 0 var(--brown-3)}
+.alt b{flex:none;width:30px;height:30px;border-radius:50%;background:var(--tema-t2);border:2px solid var(--brown-3);display:grid;place-items:center;font-size:14px}
+.alt.dis{cursor:default;box-shadow:none;opacity:.8}.alt.dis:active{transform:none}
+.alt.ok{border-color:var(--green);background:#e7f5ec;opacity:1}.alt.bad{border-color:var(--red);background:#fbece7;opacity:1}
+.fb{margin-top:16px;border-radius:14px;padding:14px;border:2.5px solid}
+.fb.ok{background:#e7f5ec;border-color:var(--green)}.fb.bad{background:var(--cream-2);border-color:var(--brown-3)}
+.fb .h{display:flex;align-items:center;gap:12px;font:700 18px Lora,serif}
+.fb svg{flex:none}.fb .ex{margin-top:10px;font-size:16px}
+.obs{margin-top:10px;font-size:14px;background:var(--sand);border-radius:10px;padding:8px 12px;color:var(--brown-2)}
+.act{display:flex;gap:10px;margin-top:16px;flex-wrap:wrap}
+.btn{font:700 16px Inter;padding:11px 18px;border:3px solid var(--brown-3);border-radius:12px;background:var(--tema);color:var(--brown-3);cursor:pointer;box-shadow:3px 3px 0 var(--brown-3)}
+.btn.sec{background:var(--white)}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:18px}
+.stat{text-align:center;background:var(--white);border:3px solid var(--brown-3);border-radius:14px;padding:12px 4px;box-shadow:3px 3px 0 var(--brown-3)}.stat b{display:block;font:700 28px Lora,serif}.stat span{font-size:13px;color:var(--muted)}
+.list button{display:flex;align-items:center;gap:10px;width:100%;text-align:left;font:inherit;background:var(--white);border:2px solid var(--brown-3);border-radius:10px;padding:9px 12px;margin:7px 0;cursor:pointer}
+.dot{width:14px;height:14px;border-radius:50%;border:2px solid var(--brown-3);flex:none;background:var(--sand)}.dot.c{background:var(--green)}.dot.e{background:var(--red)}
+.muted{color:var(--muted);font-size:14px}
+.ed{display:inline-block;font:600 12px Inter;background:var(--brown-3);color:var(--cream);border-radius:8px;padding:2px 8px;margin:6px 0 0}
+.zr{font:600 13px Inter;background:none;border:2px solid var(--red);color:var(--red);border-radius:10px;padding:5px 12px;cursor:pointer;margin:-8px 0 18px}
+.fe{margin:0 0 12px;font-size:14px;background:#fbece7;border:2px dashed var(--red);border-radius:10px;padding:8px 12px;color:var(--brown-2)}
+
+.pl{border-top:12px solid var(--tema)}
+.tm{display:flex;justify-content:space-between;font:600 14px Inter;color:var(--muted);margin:4px 0}
+input[type=range]{width:100%;accent-color:var(--brown-3);height:28px}
+.ctl{display:flex;align-items:center;justify-content:center;gap:12px;margin:10px 0;flex-wrap:wrap}
+.ctl .btn{padding:10px 14px}.big{font-size:22px;padding:12px 26px!important;min-width:110px}
+.cap{display:flex;gap:10px;width:100%;text-align:left;font:inherit;background:var(--white);border:2px solid var(--brown-3);border-radius:10px;padding:9px 12px;margin:7px 0;cursor:pointer}
+.cap.on{background:var(--tema-t2);border-width:3px}.cap small{margin-left:auto;color:var(--muted);flex:none}
+.tx{background:var(--cream-2);border:2px dashed var(--brown);border-radius:12px;padding:6px 16px;margin-top:6px}.tx h3{margin:14px 0 6px;font-size:19px}.tx p{margin:8px 0;font-size:17px;line-height:1.7}
+.ok2{color:var(--green);font-weight:700}
+</style></head><body>
+<header><div><h1>Esponja em Áudio</h1><small>Aulas explicadas · ouça e entenda os conceitos</small></div></header>
+<nav><button data-v="home">Início</button></nav>
+<main id="app"></main>
+<audio id="au" preload="metadata"></audio>
+<script>
+const MAT={ADM:{n:'Direito Administrativo',c:'#F9A825',t:'#FFF8E1',t2:'#FFECB3',d:'#8A5200'},
+CON:{n:'Direito Constitucional',c:'#43A047',t:'#E8F5E9',t2:'#C8E6C9',d:'#1B5E20'},
+CIV:{n:'Direito Civil',c:'#1E88E5',t:'#E3F2FD',t2:'#BBDEFB',d:'#0D47A1'},
+PEN:{n:'Direito Penal',c:'#E53935',t:'#FFEBEE',t2:'#FFCDD2',d:'#B71C1C'},
+TRB:{n:'Direito do Trabalho',c:'#9575CD',t:'#F3EEFA',t2:'#D1C4E9',d:'#4527A0'},
+TRI:{n:'Financeiro/Tributário',c:'#FB8C00',t:'#FFF3E0',t2:'#FFE0B2',d:'#BF360C'},
+PCV:{n:'Direito Processual Civil',c:'#1E88E5',t:'#E3F2FD',t2:'#BBDEFB',d:'#0D47A1'},
+AMB:{n:'Direito Ambiental',c:'#BCA27A',t:'#F7F1E6',t2:'#E8DCC4',d:'#6D4C2F'}};
+
+const LS='esponja-audio-v1';let D,S,view='home',cur=null,curM=null;
+try{S=JSON.parse(localStorage.getItem(LS))||{}}catch(e){S={}}
+const save=()=>{try{localStorage.setItem(LS,JSON.stringify(S))}catch(e){}};
+const $=s=>document.querySelector(s),app=$('#app'),au=$('#au');
+const esc=s=>String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;');
+const fmt=s=>{s=Math.max(0,Math.floor(s||0));return Math.floor(s/60)+':'+String(s%60).padStart(2,'0')};
+function theme(t){const m=MAT[t.materia]||MAT.ADM,r=document.documentElement.style;r.setProperty('--tema',m.c);r.setProperty('--tema-t',m.t);r.setProperty('--tema-t2',m.t2);r.setProperty('--tema-d',m.d)}
+function render(){document.querySelectorAll('nav button').forEach(b=>b.classList.add('on'));
+ if(view!=='aula'){au.pause()}
+ if(view==='home')home();else if(view==='mat')mat();else aula();window.scrollTo(0,0)}
+function home(){curM=null;const ms=Object.keys(MAT).filter(k=>D.topicos.some(t=>t.materia===k));
+ app.innerHTML='<p class="muted" style="margin-bottom:14px">Escolha a matéria e depois a aula que quer ouvir.</p>'+ms.map(k=>{const m=MAT[k],tp=D.topicos.filter(t=>t.materia===k),mins=Math.round(tp.reduce((a,t)=>a+t.duracao,0)/60),f=tp.filter(t=>(S[t.id]||{}).fim).length;
+ return `<button class="card topic" style="--tema:${m.c};--tema-t:${m.t}" data-m="${k}"><h3>${m.n}</h3><p><b>${tp.length}</b> aulas · ${mins} min · ${f} ouvidas</p><div class="bar"><i style="width:${f/tp.length*100}%"></i></div></button>`}).join('');
+ app.querySelectorAll('[data-m]').forEach(b=>b.onclick=()=>{curM=b.dataset.m;view='mat';render()})}
+function mat(){if(!curM){view='home';return home()}const m=MAT[curM],tp=D.topicos.filter(t=>t.materia===curM);
+ app.innerHTML='<button class="btn sec" id="bk" style="margin-bottom:14px">← Matérias</button><h2 style="margin:0 0 6px;font-size:22px;border-bottom:4px solid '+m.c+';padding-bottom:4px">'+m.n+'</h2><p class="muted" style="margin-bottom:14px">Aulas na ordem em que foram estudadas.</p>'+tp.map((t,i)=>{const s=S[t.id]||{};
+ return `<button class="card topic" style="--tema:${m.c};--tema-t:${m.t}" data-t="${t.id}"><span class="chip">Aula ${i+1} · PDF ${t.pdf}</span><h3>${esc(t.nome)}</h3><p>${esc(t.descricao||'')}</p><p><b>${fmt(t.duracao)}</b> min · ${s.fim?'<span class="ok2">✔ ouvida</span>':(s.pos>5?'parou em '+fmt(s.pos):'não iniciada')}</p></button>`}).join('');
+ $('#bk').onclick=()=>{view='home';render()};
+ app.querySelectorAll('[data-t]').forEach(b=>b.onclick=()=>{cur=b.dataset.t;view='aula';render()})}
+function aula(){const t=D.topicos.find(x=>x.id===cur);curM=t.materia;theme(t);const m=MAT[t.materia],s=S[t.id]||{};
+ let h=`<button class="btn sec" id="bt" style="margin-bottom:12px">← Aulas</button><p style="margin-bottom:12px"><span class="chip">${m.n}</span> <b>${esc(t.nome)}</b></p>
+ <div class="card pl"><div class="tm"><span id="cu">0:00</span><span>${fmt(t.duracao)}</span></div><input type="range" id="sk" min="0" max="${t.duracao}" value="0" step="1">
+ <div class="ctl"><button class="btn sec" id="b15">⟲ 15s</button><button class="btn big" id="pp">▶</button><button class="btn sec" id="f15">15s ⟳</button></div>
+ <div class="ctl"><button class="btn sec" id="sp">Velocidade 1x</button><button class="btn sec" id="mk">Marcar como ouvida</button></div>
+ <p class="muted" id="np" style="text-align:center"></p></div>
+ <h3 style="margin:16px 0 8px">Capítulos</h3><div id="caps">`+t.partes.map((p,i)=>`<button class="cap" data-i="${i}"><b>${i+1}.</b><span>${esc(p.titulo)}</span><small>${fmt(p.inicio)}</small></button>`).join('')+`</div>
+ <details style="margin-top:18px"><summary class="muted" style="cursor:pointer;font-size:16px">📄 Ver texto da aula</summary><div class="tx">`+t.partes.map(p=>`<h3>${esc(p.titulo)}</h3>`+p.texto.map(x=>`<p>${esc(x)}</p>`).join('')).join('')+`</div></details>`;
+ app.innerHTML=h;
+ au.src=t.audio;au.playbackRate=S._v||1;au.load();
+ const st=()=>{S[t.id]=Object.assign(S[t.id]||{},{pos:au.currentTime});save()};
+ au.onloadedmetadata=()=>{if(s.pos&&!s.fim&&s.pos<t.duracao-5)au.currentTime=s.pos;upd()};
+ function cap(){const x=au.currentTime;let c=0;t.partes.forEach((p,i)=>{if(x>=p.inicio-0.3)c=i});return c}
+ function upd(){$('#cu').textContent=fmt(au.currentTime);$('#sk').value=au.currentTime;const c=cap();document.querySelectorAll('.cap').forEach((e,i)=>e.classList.toggle('on',i===c));$('#np').textContent='Agora: '+t.partes[c].titulo;$('#pp').textContent=au.paused?'▶':'❚❚'}
+ let last=0;au.ontimeupdate=()=>{upd();if(Date.now()-last>3000){last=Date.now();st()}};
+ au.onplay=au.onpause=()=>{upd();st()};
+ au.onended=()=>{S[t.id]=Object.assign(S[t.id]||{},{fim:1,pos:0});save();upd()};
+ $('#pp').onclick=()=>au.paused?au.play():au.pause();
+ $('#b15').onclick=()=>{au.currentTime=Math.max(0,au.currentTime-15)};$('#f15').onclick=()=>{au.currentTime=Math.min(t.duracao,au.currentTime+15)};
+ $('#sk').oninput=e=>{au.currentTime=+e.target.value};
+ const vs=[1,1.25,1.5,0.85],lab=()=>$('#sp').textContent='Velocidade '+(au.playbackRate)+'x';lab();
+ $('#sp').onclick=()=>{const i=vs.indexOf(au.playbackRate);S._v=vs[(i+1)%vs.length];au.playbackRate=S._v;save();lab()};
+ $('#mk').onclick=()=>{S[t.id]=Object.assign(S[t.id]||{},{fim:1});save();$('#mk').textContent='✔ Marcada'};
+ document.querySelectorAll('.cap').forEach(b=>b.onclick=()=>{au.currentTime=t.partes[+b.dataset.i].inicio;au.play()});
+ $('#bt').onclick=()=>{st();view='mat';render()};
+ if(window.MediaSession||navigator.mediaSession){try{navigator.mediaSession.metadata=new MediaMetadata({title:t.nome,artist:'Esponja em Áudio'})}catch(e){}}}
+document.querySelectorAll('nav button').forEach(b=>b.onclick=()=>{view='home';render()});
+fetch('aulas.json?v='+Date.now()).then(r=>r.json()).then(d=>{D=d;render()}).catch(()=>app.innerHTML='<div class="card">Não foi possível carregar as aulas.</div>');
+</script></body></html>
