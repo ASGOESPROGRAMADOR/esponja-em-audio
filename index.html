@@ -72,7 +72,7 @@ TRI:{n:'Financeiro/Tributário',c:'#FB8C00',t:'#FFF3E0',t2:'#FFE0B2',d:'#BF360C'
 PCV:{n:'Direito Processual Civil',c:'#1E88E5',t:'#E3F2FD',t2:'#BBDEFB',d:'#0D47A1'},
 AMB:{n:'Direito Ambiental',c:'#BCA27A',t:'#F7F1E6',t2:'#E8DCC4',d:'#6D4C2F'}};
 
-const LS='esponja-audio-v1';let D,S,view='home',cur=null,curM=null;
+const LS='esponja-audio-v1';let D,S,view='home',cur=null,curM=null,AP=false;
 try{S=JSON.parse(localStorage.getItem(LS))||{}}catch(e){S={}}
 const save=()=>{try{localStorage.setItem(LS,JSON.stringify(S))}catch(e){}};
 const $=s=>document.querySelector(s),app=$('#app'),au=$('#au');
@@ -96,7 +96,7 @@ function aula(){const t=D.topicos.find(x=>x.id===cur);curM=t.materia;theme(t);co
  <div class="card pl"><div class="tm"><span id="cu">0:00</span><span>${fmt(t.duracao)}</span></div><input type="range" id="sk" min="0" max="${t.duracao}" value="0" step="1">
  <div class="ctl"><button class="btn sec" id="b15">⟲ 15s</button><button class="btn big" id="pp">▶</button><button class="btn sec" id="f15">15s ⟳</button></div>
  <div class="ctl"><button class="btn sec" id="sp">Velocidade 1x</button><button class="btn sec" id="mk">Marcar como ouvida</button></div>
- <p class="muted" id="np" style="text-align:center"></p></div>
+ <p class="muted" id="np" style="text-align:center"></p><div class="ctl" id="nv"></div><div id="nx"></div></div>
  <h3 style="margin:16px 0 8px">Capítulos</h3><div id="caps">`+t.partes.map((p,i)=>`<button class="cap" data-i="${i}"><b>${i+1}.</b><span>${esc(p.titulo)}</span><small>${fmt(p.inicio)}</small></button>`).join('')+`</div>
  <details style="margin-top:18px"><summary class="muted" style="cursor:pointer;font-size:16px">📄 Ver texto da aula</summary><div class="tx">`+t.partes.map(p=>`<h3>${esc(p.titulo)}</h3>`+p.texto.map(x=>`<p>${esc(x)}</p>`).join('')).join('')+`</div></details>`;
  app.innerHTML=h;
@@ -107,7 +107,7 @@ function aula(){const t=D.topicos.find(x=>x.id===cur);curM=t.materia;theme(t);co
  function upd(){$('#cu').textContent=fmt(au.currentTime);$('#sk').value=au.currentTime;const c=cap();document.querySelectorAll('.cap').forEach((e,i)=>e.classList.toggle('on',i===c));$('#np').textContent='Agora: '+t.partes[c].titulo;$('#pp').textContent=au.paused?'▶':'❚❚'}
  let last=0;au.ontimeupdate=()=>{upd();if(Date.now()-last>3000){last=Date.now();st()}};
  au.onplay=au.onpause=()=>{upd();st()};
- au.onended=()=>{S[t.id]=Object.assign(S[t.id]||{},{fim:1,pos:0});save();upd()};
+ au.onended=()=>{S[t.id]=Object.assign(S[t.id]||{},{fim:1,pos:0});save();upd();showNext()};
  $('#pp').onclick=()=>au.paused?au.play():au.pause();
  $('#b15').onclick=()=>{au.currentTime=Math.max(0,au.currentTime-15)};$('#f15').onclick=()=>{au.currentTime=Math.min(t.duracao,au.currentTime+15)};
  $('#sk').oninput=e=>{au.currentTime=+e.target.value};
@@ -116,6 +116,13 @@ function aula(){const t=D.topicos.find(x=>x.id===cur);curM=t.materia;theme(t);co
  $('#mk').onclick=()=>{S[t.id]=Object.assign(S[t.id]||{},{fim:1});save();$('#mk').textContent='✔ Marcada'};
  document.querySelectorAll('.cap').forEach(b=>b.onclick=()=>{au.currentTime=t.partes[+b.dataset.i].inicio;au.play()});
  $('#bt').onclick=()=>{st();view='mat';render()};
+ const L=D.topicos.filter(x=>x.materia===t.materia),ix=L.findIndex(x=>x.id===t.id),pv=L[ix-1],nx=L[ix+1];
+ const go=o=>{st();cur=o.id;AP=true;view='aula';render()};
+ $('#nv').innerHTML=(pv?'<button class="btn sec" id="pvb">⏮ Aula anterior</button>':'')+(nx?'<button class="btn" id="nxb">Próxima aula ⏭</button>':'<span class="muted">Esta é a última aula da matéria</span>');
+ if(pv)$('#pvb').onclick=()=>go(pv);if(nx)$('#nxb').onclick=()=>go(nx);
+ function showNext(){$('#nx').innerHTML=nx?'<div class="card" style="margin:14px 0 0;text-align:center"><p class="ok2">✔ Aula concluída</p><p style="margin:6px 0 12px"><b>Próxima:</b> '+esc(nx.nome)+'</p><button class="btn big" id="nx2">Ouvir a próxima ▶</button></div>':'<p class="ok2" style="text-align:center;margin-top:14px">✔ Você concluiu todas as aulas desta matéria.</p>';if(nx)$('#nx2').onclick=()=>go(nx)}
+ try{if(navigator.mediaSession){navigator.mediaSession.setActionHandler('nexttrack',nx?()=>go(nx):null);navigator.mediaSession.setActionHandler('previoustrack',pv?()=>go(pv):null)}}catch(e){}
+ if(AP){AP=false;au.play().catch(()=>{})}
  if(window.MediaSession||navigator.mediaSession){try{navigator.mediaSession.metadata=new MediaMetadata({title:t.nome,artist:'Esponja em Áudio'})}catch(e){}}}
 document.querySelectorAll('nav button').forEach(b=>b.onclick=()=>{view='home';render()});
 fetch('aulas.json?v='+Date.now()).then(r=>r.json()).then(d=>{D=d;D.topicos.sort((a,b)=>a.pdf-b.pdf||a.ordem-b.ordem);render()}).catch(()=>app.innerHTML='<div class="card">Não foi possível carregar as aulas.</div>');
